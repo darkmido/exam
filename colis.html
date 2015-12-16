@@ -18,13 +18,6 @@
 }
 </style>
 <head>
-    <script>
-
-    function colis(id){
-    nom = document.getElementById('joueur').value;
-}
-
-    </script>
     <title>Personnes</title>
     <link rel="stylesheet" type="text/css" href="http://w2ui.com/src/w2ui-1.4.2.min.css" />
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
@@ -35,20 +28,11 @@
     <div id="grid" style="width: 80%; height: 250px;margin-left: 10%;margin-right: 10%"></div>
     <br>
 
-<hr>
-
-
-    <div id="titre">CRUD Colis</div>
-    <center><input type="text" class="form-control" id="colis" placeholder="Entrez votre colis">
-        <button onClick="chercher()" class="btn btn-primary btn-block">Bienvenue</button> </center>
-    <div id="grid2" style="width: 80%; height: 250px;margin-left: 10%;margin-right: 10%"></div>
-
 
 <script defer type="text/javascript">
 
  var tab=[];
-readPersonnes();
-readColis(1);
+reaPersonnes();
 
 
 function showChanged() {
@@ -57,7 +41,7 @@ function showChanged() {
 }
 
 
-function readPersonnes(){
+ function reaPersonnes(){
   data = {"table":"personne"};
   $.ajax({url :'r.php',
         data: data ,
@@ -66,10 +50,11 @@ function readPersonnes(){
         remplirPersonnes(pers);
     }
         });
-}   
+
+     }   
 function remplirPersonnes(personnes){
     personnes.forEach(function(s){
-        tab.push({ recid: s["id_personne"],id_personne: s["id_perso"], nom_personne: s["nom_personne"] })
+        tab.push({ recid: s["id_personne"],id_personne: s["id_perso"], nom_personne: s["nom_personne"], check: false })
 
             });
 $(function () {
@@ -83,58 +68,6 @@ $(function () {
         columns: [                
             { field: 'recid', caption: 'id', size: '150px', sortable: true, resizable: true },
             { field: 'nom_personne', caption: 'nom_personne', size: '150px', sortable: true, resizable: true, 
-                editable: { type: 'text' }
-            }
-        ],
-        toolbar: {
-            items: [
-                { id: 'add', type: 'button', caption: 'Ajouter une personne', icon: 'w2ui-icon-plus' }
-            ],
-            onClick: function (event) {
-                if (event.target == 'add') {
-                    w2ui.grid.add({ 
-
-                        recid: w2ui.grid.records.length + 1 });
-                }
-            }
-        },
-        records: tab
-    });    
-});
-
-}
-
-function readColis(idColis){
-  data = {"table":"colis","id_personne" : idColis};
-  $.ajax({url :'r.php',
-        data: data ,
-        success : function (html){
-          cols = JSON.parse(html);
-          console.log(cols);
-        remplirColis(cols);
-    }
-        });
-}
-
-function remplirColis(colis){
-    colis.forEach(function(s){
-        tab.push({ recid: s["id_colis"],id_colis: s["id_colis"], libelle_colis: s["libelle_colis"],  id_personne: s["id_personne"]})
-
-            });
-$(function () {
-    console.log(tab);
-    $('#grid2').w2grid({ 
-        name: 'grid2', 
-        show: { 
-            toolbar: true,
-            footer: true,
-        },
-        columns: [                
-            { field: 'recid', caption: 'id', size: '150px', sortable: true, resizable: true },
-            { field: 'libelle_colis', caption: 'libelle_colis', size: '150px', sortable: true, resizable: true, 
-                editable: { type: 'text' }
-            },
-            { field: 'id_personne', caption: 'id_personne', size: '150px', sortable: true, resizable: true, 
                 editable: { type: 'text' }
             }
         ],
